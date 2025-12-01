@@ -1036,7 +1036,7 @@ body {
     height: 100%;
     object-fit: contain;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.6s ease-in-out;
 }
 
 .slider-image.active {
@@ -2520,50 +2520,6 @@ html {
 
 
     <!-- Footer -->
-    <footer id="contact" class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="footer-logo">
-                        <span class="logo-m" style="color: #06A664;">M</span>
-                        <span class="logo-3" style="color: #E6B800;">³</span>
-                        <span class="logo-fund" style="color: #FFFFFF;">Fund</span>
-                    </div>
-                    <p class="footer-description">
-                        Plateforme de crowdfunding locale pour le Mali. Financez l'avenir, un projet à la fois.
-                    </p>
-                </div>
-                <div class="footer-section wow fadeInUp" data-wow-delay="0.2s">
-                    <h4 class="footer-title">Navigation</h4>
-                    <ul class="footer-links">
-                        <li><a href="#accueil" class="footer-link">Accueil</a></li>
-                        <li><a href="#apropos" class="footer-link">À propos</a></li>
-                        <li><a href="#fonctionnalites" class="footer-link">Fonctionnalités</a></li>
-                        <li><a href="#comment" class="footer-link">Comment ça marche</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section wow fadeInUp" data-wow-delay="0.3s">
-                    <h4 class="footer-title">Légal</h4>
-                    <ul class="footer-links">
-                        <li><a href="#cgu" class="footer-link">CGU</a></li>
-                        <li><a href="#confidentialite" class="footer-link">Confidentialité</a></li>
-                        <li><a href="#mentions" class="footer-link">Mentions légales</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section wow fadeInUp" data-wow-delay="0.4s">
-                    <h4 class="footer-title">Contact</h4>
-                    <ul class="footer-links">
-                        <li><a href="mailto:contact@m3fund.ml" class="footer-link">contact@m3fund.ml</a></li>
-                        <li><a href="tel:+22370707070" class="footer-link">+223 70 70 70 70</a></li>
-                        <li class="footer-link">Bamako, Mali</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom wow fadeInUp" data-wow-delay="0.5s">
-                <p>&copy; 2025 M3Fund. Tous droits réservés.</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
 // Smooth scroll for navigation links
@@ -2708,82 +2664,114 @@ window.addEventListener('scroll', () => {
 });
 
 // Modal functionality
-const modal = document.getElementById('auth-modal');
-const loginBtn = document.querySelector('a[href="#connexion"]');
-const registerBtn = document.querySelector('a[href="#inscription"]');
-const closeBtn = document.querySelector('.close');
-const tabBtns = document.querySelectorAll('.tab-btn');
-const authForms = document.querySelectorAll('.auth-form');
-
-// Open modal with login form
-loginBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    openModal('login');
-});
-
-// Open modal with registration form
-registerBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    openModal('register');
-});
-
-// Close modal
-closeBtn.addEventListener('click', function() {
-    modal.style.display = 'none';
-});
-
-// Close modal when clicking outside
-window.addEventListener('click', function(event) {
-    if (event.target === modal) {
-        modal.style.display = 'none';
+function initializeModal() {
+    const modal = document.getElementById('auth-modal');
+    const loginBtn = document.querySelector('a[href="#connexion"]');
+    const registerBtn = document.querySelector('a[href="#inscription"]');
+    const closeBtn = document.querySelector('.close');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const authForms = document.querySelectorAll('.auth-form');
+    
+    // Check if all elements exist before attaching event listeners
+    if (!modal || !closeBtn || !tabBtns || !authForms) return;
+    
+    // Open modal with login form
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openModal('login');
+        });
     }
-});
-
-// Tab switching
-tabBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        // Remove active class from all buttons and forms
+    
+    // Open modal with registration form
+    if (registerBtn) {
+        registerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openModal('register');
+        });
+    }
+    
+    // Close modal
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+    
+    // Tab switching
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons and forms
+            tabBtns.forEach(b => b.classList.remove('active'));
+            authForms.forEach(form => form.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Show corresponding form
+            const tab = this.getAttribute('data-tab');
+            const formElement = document.getElementById(`${tab}-form`);
+            if (formElement) {
+                formElement.classList.add('active');
+            }
+        });
+    });
+    
+    function openModal(tab) {
+        modal.style.display = 'block';
+        
+        // Reset tabs
         tabBtns.forEach(b => b.classList.remove('active'));
         authForms.forEach(form => form.classList.remove('active'));
         
-        // Add active class to clicked button
-        this.classList.add('active');
+        // Activate selected tab
+        const tabButton = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+        const formElement = document.getElementById(`${tab}-form`);
         
-        // Show corresponding form
-        const tab = this.getAttribute('data-tab');
-        document.getElementById(`${tab}-form`).classList.add('active');
-    });
-});
-
-function openModal(tab) {
-    modal.style.display = 'block';
+        if (tabButton) {
+            tabButton.classList.add('active');
+        }
+        
+        if (formElement) {
+            formElement.classList.add('active');
+        }
+    }
     
-    // Reset tabs
-    tabBtns.forEach(b => b.classList.remove('active'));
-    authForms.forEach(form => form.classList.remove('active'));
+    // Form submissions
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
     
-    // Activate selected tab
-    document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
-    document.getElementById(`${tab}-form`).classList.add('active');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add login logic here
+            console.log('Login submitted');
+            modal.style.display = 'none';
+        });
+    }
+    
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add registration logic here
+            console.log('Registration submitted');
+            modal.style.display = 'none';
+        });
+    }
 }
 
-// Form submissions
-document.getElementById('login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Add login logic here
-    console.log('Login submitted');
-    modal.style.display = 'none';
-});
+// Initialize modal when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeModal);
+} else {
+    initializeModal();
+}
 
-document.getElementById('register-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Add registration logic here
-    console.log('Registration submitted');
-    modal.style.display = 'none';
-});
-
-// Initialize WOW.js
-new WOW().init();
 
 // Register service worker
 if ('serviceWorker' in navigator) {
@@ -2801,88 +2789,204 @@ if ('serviceWorker' in navigator) {
 console.log('M3Fund - Plateforme de Crowdfunding au Mali');
     
     // Initialize WOW.js and image sliders
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize WOW.js
-        new WOW().init();
-        
-        // Image slider functionality for How It Works section
+    function initializeSliders() {
         const sliders = document.querySelectorAll('.image-slider');
-        
-        sliders.forEach((slider, sliderIndex) => {
+
+        sliders.forEach(slider => {
             const images = slider.querySelectorAll('.slider-image');
             const prevBtn = slider.querySelector('.prev-btn');
             const nextBtn = slider.querySelector('.next-btn');
+
             let currentIndex = 0;
-            let intervalId;
-            
-            // Function to show image with animation
-            function showImage(index) {
+            let intervalId = null;
+
+            // Fonction pour afficher l'image
+            const showImage = (index) => {
                 images.forEach((img, i) => {
-                    img.classList.remove('active');
-                    if (i === index) {
-                        // Add animation classes
-                        img.classList.add('active');
-                        img.style.animation = 'fadeIn 0.5s ease, slideIn 0.5s ease';
-                    }
+                    img.classList.toggle('active', i === index);
                 });
-            }
-            
-            // Show first image
-            showImage(currentIndex);
-            
-            // Start automatic sliding
-            function startAutoSlide() {
-                intervalId = setInterval(() => {
-                    currentIndex = (currentIndex + 1) % images.length;
-                    showImage(currentIndex);
-                }, 3000); // Change image every 3 seconds
-            }
-            
-            // Stop automatic sliding
-            function stopAutoSlide() {
-                clearInterval(intervalId);
-            }
-            
-            // Start auto sliding for the first slider (project owner)
-            // Add a data attribute to identify the project owner slider
-            if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
-                startAutoSlide();
-                
-                // Pause auto slide on hover
-                slider.addEventListener('mouseenter', stopAutoSlide);
-                slider.addEventListener('mouseleave', startAutoSlide);
-            }
-            
-            // Next button functionality
-            nextBtn.addEventListener('click', function() {
-                // Stop auto slide when user interacts
-                stopAutoSlide();
+            };
+
+            // Image suivante
+            const nextImage = () => {
                 currentIndex = (currentIndex + 1) % images.length;
                 showImage(currentIndex);
-                
-                // Restart auto slide for project owner after user interaction
-                if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
-                    setTimeout(startAutoSlide, 10000); // Resume auto slide after 10 seconds
-                }
-            });
-            
-            // Previous button functionality
-            prevBtn.addEventListener('click', function() {
-                // Stop auto slide when user interacts
-                stopAutoSlide();
+            };
+
+            // Image précédente
+            const prevImage = () => {
                 currentIndex = (currentIndex - 1 + images.length) % images.length;
                 showImage(currentIndex);
-                
-                // Restart auto slide for project owner after user interaction
+            };
+
+            // Démarrer le carrousel automatique
+            const startAutoSlide = () => {
+                // On ne fait défiler automatiquement QUE le slider du porteur de projet
                 if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
-                    setTimeout(startAutoSlide, 10000); // Resume auto slide after 10 seconds
+                    intervalId = setInterval(nextImage, 3500); // toutes les 3.5s
+                }
+            };
+
+            // Arrêter le carrousel
+            const stopAutoSlide = () => {
+                if (intervalId) clearInterval(intervalId);
+            };
+
+            // Initialisation
+            showImage(0);
+
+            // Boutons
+            if (nextBtn) nextBtn.addEventListener('click', () => {
+                stopAutoSlide();
+                nextImage();
+                // Redémarre l'auto-slide après 10s d'inactivité (seulement porteur)
+                if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
+                    setTimeout(startAutoSlide, 10000);
                 }
             });
+
+            if (prevBtn) prevBtn.addEventListener('click', () => {
+                stopAutoSlide();
+                prevImage();
+                if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
+                    setTimeout(startAutoSlide, 10000);
+                }
+            });
+
+            // Pause au survol (optionnel, très agréable UX)
+            slider.addEventListener('mouseenter', stopAutoSlide);
+            slider.addEventListener('mouseleave', startAutoSlide);
+
+            // Démarrage automatique pour le slider du porteur de projet uniquement
+            startAutoSlide();
         });
-    });
+    }
+    
+    // Initialize everything when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeModal();
+            initializeSliders();
+        });
+    } else {
+        initializeModal();
+        initializeSliders();
+    }
     </script>
     <!-- WOW.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="footer-logo">
+                        <span class="logo-m" style="color: #06A664;">M</span>
+                        <span class="logo-3" style="color: #E6B800;">³</span>
+                        <span class="logo-fund" style="color: #FFFFFF;">Fund</span>
+                    </div>
+                    <p class="footer-description">
+                        Plateforme de crowdfunding locale pour le Mali. Financez l'avenir, un projet à la fois.
+                    </p>
+                </div>
+                <div class="footer-section wow fadeInUp" data-wow-delay="0.2s">
+                    <h4 class="footer-title">Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#accueil" class="footer-link">Accueil</a></li>
+                        <li><a href="#apropos" class="footer-link">À propos</a></li>
+                        <li><a href="#fonctionnalites" class="footer-link">Fonctionnalités</a></li>
+                        <li><a href="#comment" class="footer-link">Comment ça marche</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section wow fadeInUp" data-wow-delay="0.3s">
+                    <h4 class="footer-title">Légal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#cgu" class="footer-link">CGU</a></li>
+                        <li><a href="#confidentialite" class="footer-link">Confidentialité</a></li>
+                        <li><a href="#mentions" class="footer-link">Mentions légales</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section wow fadeInUp" data-wow-delay="0.4s">
+                    <h4 class="footer-title">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:contact@m3fund.ml" class="footer-link">contact@m3fund.ml</a></li>
+                        <li><a href="tel:+22370707070" class="footer-link">+223 70 70 70 70</a></li>
+                        <li class="footer-link">Bamako, Mali</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom wow fadeInUp" data-wow-delay="0.5s">
+                <p>&copy; 2025 M3Fund. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal d'authentification (MANQUAIT !) -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Se connecter</button>
+                    <button class="tab-btn" data-tab="register">S'inscrire</button>
+                </div>
+
+                <!-- Formulaire de connexion -->
+                <form id="login-form" class="auth-form active">
+                    <h2>Connexion</h2>
+                    <div class="form-group">
+                        <label for="login-email">Email ou téléphone</label>
+                        <input type="text" id="login-email" placeholder="exemple@mail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Mot de passe</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary full-width">Se connecter</button>
+                    </div>
+                    <div class="auth-footer">
+                        <a href="#">Mot de passe oublié ?</a>
+                    </div>
+                </form>
+
+                <!-- Formulaire d'inscription -->
+                <form id="register-form" class="auth-form">
+                    <h2>Créer un compte</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-firstname">Prénom</label>
+                            <input type="text" id="register-firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-lastname">Nom</label>
+                            <input type="text" id="register-lastname" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" placeholder="exemple@mail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-phone">Téléphone</label>
+                        <input type="tel" id="register-phone" placeholder="+223 00 00 00 00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Mot de passe</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="cgu" required>
+                        <label for="cgu">J'accepte les <a href="#">conditions d'utilisation</a></label>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary full-width">S'inscrire</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
