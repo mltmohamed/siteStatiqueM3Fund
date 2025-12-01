@@ -1,0 +1,21 @@
+{
+  "name": "M3Fund - Plateforme de Crowdfunding au Mali",
+  "short_name": "M3Fund",
+  "description": "Plateforme de crowdfunding locale pour le Mali. Investissez, donnez ou proposez votre bénévolat pour soutenir des projets locaux.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#06A664",
+  "theme_color": "#06A664",
+  "icons": [
+    {
+      "src": "crow.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "crow.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
