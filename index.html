@@ -916,6 +916,161 @@ body {
     overflow: hidden;
 }
 
+.actor-section {
+    margin-bottom: 4rem;
+    padding: 2rem;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(6, 166, 100, 0.05) 0%, rgba(230, 184, 0, 0.05) 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.actor-section.contributor-section {
+    background: linear-gradient(135deg, rgba(230, 184, 0, 0.05) 0%, rgba(6, 166, 100, 0.05) 100%);
+}
+
+.actor-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.actor-text {
+    padding: 1rem;
+}
+
+.actor-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dark-gray);
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, var(--primary-green), var(--primary-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.actor-description {
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.actor-features {
+    list-style: none;
+}
+
+.actor-features li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--dark-gray);
+}
+
+.actor-features li:before {
+    content: '✓';
+    color: var(--primary-green);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.contributor-download-options {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, rgba(6, 166, 100, 0.1), rgba(230, 184, 0, 0.1));
+}
+
+
+
+.contributor-download-options .qr-code {
+    text-align: center;
+}
+
+.contributor-download-options .qr-label {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .contributor-download-options {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.actor-images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.image-slider {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.slider-image.active {
+    opacity: 1;
+}
+
+.slider-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.slider-btn {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(6, 166, 100, 0.3);
+}
+
+.slider-btn:hover {
+    background: #058a54;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(6, 166, 100, 0.4);
+}
+
+.slider-btn:active {
+    transform: translateY(0);
+}
+
 .how-it-works::before {
     content: '';
     position: absolute;
@@ -1896,6 +2051,15 @@ body {
     .footer-content {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .actor-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .actor-section.contributor-section .actor-content {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1974,6 +2138,18 @@ body {
         width: 100%;
         max-width: 300px;
     }
+
+    .actor-content {
+        grid-template-columns: 1fr;
+    }
+
+    .actor-section.contributor-section .actor-content {
+        grid-template-columns: 1fr;
+    }
+
+    .slider-container {
+        height: 250px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2009,6 +2185,24 @@ html {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(20px);
+    }
+    to {
+        transform: translateX(0);
     }
 }
 
@@ -2144,44 +2338,108 @@ html {
             <div class="section-header wow fadeInUp">
                 <h2 class="section-title">Comment ça marche ?</h2>
                 <p class="section-description">
-                    Lancez ou soutenez un projet en 4 étapes
+                    Deux acteurs principaux sur la plateforme
                 </p>
             </div>
-            <div class="steps">
-                <div class="step-item wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Créez votre compte</h3>
-                        <p class="step-text">
-                            Inscrivez-vous et vérifiez votre compte
+            
+            <!-- Porteur de projet -->
+            <div class="actor-section">
+                <div class="actor-content">
+                    <div class="actor-text">
+                        <h3 class="actor-title">Porteur de projet</h3>
+                        <p class="actor-description">
+                            Le porteur de projet présente son projet après vérification et peut lancer différentes campagnes 
+                            pour collecter des dons, investissements et bénévolats. Sa plateforme est web responsive.
                         </p>
+                        <ul class="actor-features">
+                            <li>Présentez votre projet après validation</li>
+                            <li>Lancez des campagnes de financement</li>
+                            <li>Gérez vos contributions en temps réel</li>
+                            <li>Interface web responsive optimisée</li>
+                        </ul>
+                        <!-- Action buttons for project owner -->
+                        <div class="actor-actions" style="margin-top: 30px; display: flex; gap: 15px;">
+                            <a href="#" class="btn btn-primary" style="padding: 12px 25px; border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; font-size: 1rem; position: relative; overflow: hidden; z-index: 1; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); background: linear-gradient(135deg, var(--primary-green), #058a54); color: var(--white);">
+                                Commencez maintenant
+                            </a>
+                            <a href="#" class="btn btn-outline" style="padding: 12px 25px; border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 2px solid var(--primary-green); cursor: pointer; font-size: 1rem; position: relative; overflow: hidden; z-index: 1; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); background: transparent; color: var(--primary-green);">
+                                Se connecter
+                            </a>
+                        </div>
+                    </div>
+                    <div class="actor-images">
+                        <div class="image-slider">
+                            <div class="slider-container">
+                                <img src="🖥 iMac.png" alt="Dashboard du porteur de projet" class="slider-image active">
+                                <img src="🖥 iMac-1.png" alt="Interface de gestion des projets" class="slider-image">
+                                <img src="🖥 iMac-2.png" alt="Campagnes de financement" class="slider-image">
+                                <img src="🖥 iMac-3.png" alt="Statistiques et analytics" class="slider-image">
+                                <img src="🖥 iMac-4.png" alt="Gestion des contributions" class="slider-image">
+                                <img src="🖥 iMac-5.png" alt="Communication avec les contributeurs" class="slider-image">
+                                <img src="🖥 iMac-6.png" alt="Rapports et reporting" class="slider-image">
+                            </div>
+                            <div class="slider-controls">
+                                <button class="slider-btn prev-btn">❮</button>
+                                <button class="slider-btn next-btn">❯</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="step-item wow fadeInUp" data-wow-delay="0.2s">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Déposez votre projet</h3>
-                        <p class="step-text">
-                            Déposez les détails de votre projet
-                        </p>
+            </div>
+            
+            <!-- Contributeur -->
+            <div class="actor-section contributor-section">
+                <div class="actor-content">
+                    <div class="actor-images">
+                        <div class="image-slider">
+                            <div class="slider-container">
+                                <img src="ouvertureApp.png" alt="Application mobile du contributeur" class="slider-image active">
+                                <img src="localisaionDeLtilisateur.png" alt="Localisation des projets" class="slider-image">
+                                <img src="pagePourContribuer.png" alt="Contribution aux projets" class="slider-image">
+                            </div>
+                            <div class="slider-controls">
+                                <button class="slider-btn prev-btn">❮</button>
+                                <button class="slider-btn next-btn">❯</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="step-item wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Validation & Publication</h3>
-                        <p class="step-text">
-                            Validation par notre équipe
+                    <div class="actor-text">
+                        <h3 class="actor-title">Contributeur</h3>
+                        <p class="actor-description">
+                            Le contributeur utilise l'application mobile pour découvrir et contribuer aux projets qui l'intéressent. 
+                            Il peut investir, faire un don ou proposer son bénévolat.
                         </p>
-                    </div>
-                </div>
-                <div class="step-item wow fadeInUp" data-wow-delay="0.4s">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Collecte de fonds</h3>
-                        <p class="step-text">
-                            Collectez des fonds en temps réel
-                        </p>
+                        <ul class="actor-features">
+                            <li>Découvrez des projets près de chez vous</li>
+                            <li>Contribuez par dons, investissements ou bénévolat</li>
+                            <li>Suivez l'évolution de vos contributions</li>
+                            <li>Application mobile intuitive</li>
+                        </ul>
+                        <!-- Download options for contributor -->
+                        <div class="contributor-download-options">
+                            <div style="display: flex; align-items: center; gap: 30px;">
+                                <div class="qr-code">
+                                    <img src="codeQr.jpg" alt="QR Code pour télécharger l'application" class="qr-code-image" style="width: 100px; height: 100px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);">
+                                    <p class="qr-label">Scan pour télécharger</p>
+                                </div>
+                                <div class="store-buttons" style="display: flex; gap: 15px;">
+                                    <a href="#" class="store-button" style="padding: 8px 15px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; background: #000; color: white; font-size: 12px;">
+                                        <img src="appStore.png" alt="Télécharger sur l'App Store" class="store-logo" style="height: 30px; width: auto; margin-right: 10px;">
+                                        <div class="store-text">
+                                            <span class="store-label" style="font-size: 10px; display: block;">Télécharger sur</span>
+                                            <span class="store-name" style="font-size: 12px; font-weight: bold; display: block;">App Store</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="store-button" style="padding: 8px 15px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; background: #000; color: white; font-size: 12px;">
+                                        <img src="playStore.png" alt="Disponible sur Google Play" class="store-logo" style="height: 30px; width: auto; margin-right: 10px;">
+                                        <div class="store-text">
+                                            <span class="store-label" style="font-size: 10px; display: block;">Disponible sur</span>
+                                            <span class="store-name" style="font-size: 12px; font-weight: bold; display: block;">Google Play</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2258,48 +2516,6 @@ html {
         </div>
     </section>
 
-    <!-- Télécharger l'application -->
-    <section id="telecharger" class="download-app">
-        <div class="container">
-            <div class="section-header wow fadeInUp">
-                <h2 class="section-title">Télécharger l'application</h2>
-                <p class="section-description">
-                    Accédez à M3Fund depuis votre smartphone
-                </p>
-            </div>
-            <div class="download-content">
-                <div class="app-preview wow fadeInLeft" data-wow-delay="0.2s">
-                    <div class="phone-frame">
-                        <div class="screen">
-                            <img src="ouvertureApp.png" alt="Application M3Fund sur smartphone" class="app-screenshot" loading="lazy">
-                        </div>
-                    </div>
-                </div>
-                <div class="download-options wow fadeInRight" data-wow-delay="0.2s">
-                    <div class="qr-code">
-                        <img src="codeQr.jpg" alt="QR Code pour télécharger l'application" class="qr-code-image" style="width: 200px; height: 200px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-                        <p class="qr-label">Code QR</p>
-                    </div>
-                    <div class="store-buttons">
-                        <a href="#" class="store-button wow fadeInUp" data-wow-delay="0.3s">
-                            <img src="appStore.png" alt="Télécharger sur l'App Store" class="store-logo" style="height: 50px; width: auto; margin-right: 15px;">
-                            <div class="store-text">
-                                <span class="store-label">Télécharger sur</span>
-                                <span class="store-name">App Store</span>
-                            </div>
-                        </a>
-                        <a href="#" class="store-button wow fadeInUp" data-wow-delay="0.4s">
-                            <img src="playStore.png" alt="Disponible sur Google Play" class="store-logo" style="height: 50px; width: auto; margin-right: 15px;">
-                            <div class="store-text">
-                                <span class="store-label">Disponible sur</span>
-                                <span class="store-name">Google Play</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer id="contact" class="footer">
@@ -2581,15 +2797,90 @@ if ('serviceWorker' in navigator) {
 }
 
 console.log('M3Fund - Plateforme de Crowdfunding au Mali');
+    
+    // Initialize WOW.js and image sliders
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize WOW.js
+        new WOW().init();
+        
+        // Image slider functionality for How It Works section
+        const sliders = document.querySelectorAll('.image-slider');
+        
+        sliders.forEach((slider, sliderIndex) => {
+            const images = slider.querySelectorAll('.slider-image');
+            const prevBtn = slider.querySelector('.prev-btn');
+            const nextBtn = slider.querySelector('.next-btn');
+            let currentIndex = 0;
+            let intervalId;
+            
+            // Function to show image with animation
+            function showImage(index) {
+                images.forEach((img, i) => {
+                    img.classList.remove('active');
+                    if (i === index) {
+                        // Add animation classes
+                        img.classList.add('active');
+                        img.style.animation = 'fadeIn 0.5s ease, slideIn 0.5s ease';
+                    }
+                });
+            }
+            
+            // Show first image
+            showImage(currentIndex);
+            
+            // Start automatic sliding
+            function startAutoSlide() {
+                intervalId = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    showImage(currentIndex);
+                }, 3000); // Change image every 3 seconds
+            }
+            
+            // Stop automatic sliding
+            function stopAutoSlide() {
+                clearInterval(intervalId);
+            }
+            
+            // Start auto sliding for the first slider (project owner)
+            // Add a data attribute to identify the project owner slider
+            if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
+                startAutoSlide();
+                
+                // Pause auto slide on hover
+                slider.addEventListener('mouseenter', stopAutoSlide);
+                slider.addEventListener('mouseleave', startAutoSlide);
+            }
+            
+            // Next button functionality
+            nextBtn.addEventListener('click', function() {
+                // Stop auto slide when user interacts
+                stopAutoSlide();
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+                
+                // Restart auto slide for project owner after user interaction
+                if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
+                    setTimeout(startAutoSlide, 10000); // Resume auto slide after 10 seconds
+                }
+            });
+            
+            // Previous button functionality
+            prevBtn.addEventListener('click', function() {
+                // Stop auto slide when user interacts
+                stopAutoSlide();
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+                
+                // Restart auto slide for project owner after user interaction
+                if (slider.closest('.actor-section') && !slider.closest('.contributor-section')) {
+                    setTimeout(startAutoSlide, 10000); // Resume auto slide after 10 seconds
+                }
+            });
+        });
+    });
     </script>
     <!-- WOW.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-    <script>
-        // Initialize WOW.js after library is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            new WOW().init();
-        });
-    </script>
 </body>
 </html>
 
